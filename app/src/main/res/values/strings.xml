@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">QR URL</string>
+    <string name="tab_text_1">QR Code </string>
+    <string name="tab_text_2">Shorten URL</string>
+    <string name="share">share</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
