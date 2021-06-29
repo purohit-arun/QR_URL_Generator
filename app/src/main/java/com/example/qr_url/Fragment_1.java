@@ -32,7 +32,7 @@ public class Fragment_1 extends Fragment {
     EditText dataEdt;
     ImageView qrCode;
     Button generateQrBtn;
-    Bitmap bitmap;
+    static Bitmap bitmap = null;
     QRGEncoder qrgEncoder;
 
 
@@ -67,12 +67,11 @@ public class Fragment_1 extends Fragment {
         return fragment;
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_1, container, false);
-        setHasOptionsMenu(true);
+//        setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.fragment_1, container, false);
 
         qrCode = view.findViewById(R.id.imageview1);
@@ -111,6 +110,7 @@ public class Fragment_1 extends Fragment {
                     int dimen = width < height ? width : height;
                     dimen = dimen * 3 / 4;
 
+
                     // setting this dimensions inside our qr code
                     // encoder to generate our qr code.
                     qrgEncoder = new QRGEncoder(dataEdt.getText().toString(), null, QRGContents.Type.TEXT, dimen);
@@ -129,6 +129,10 @@ public class Fragment_1 extends Fragment {
             }
         });
         return view;
+    }
+
+    public static Bitmap getterbitmapqr(){
+        return bitmap;
     }
 
     @Override
