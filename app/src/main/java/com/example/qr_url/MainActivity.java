@@ -2,6 +2,7 @@ package com.example.qr_url;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 
@@ -48,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Saves the image as PNG to the app's private external storage folder.
      *
-     * @param image Bitmap to save.
+     * @param @image Bitmap to save.
      * @return Uri of the saved file or null
      */
 //    private Uri saveImageExternal(Bitmap image) {
@@ -88,23 +90,28 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
+        Bitmap icon = Fragment_1.getterbitmapqr();
 
-        if (id == R.id.share) {
-            Bitmap icon = Fragment_1.getterbitmapqr();
-            Intent share = new Intent(Intent.ACTION_SEND);
-            share.setType("image/jpeg");
-            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-            icon.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-            File f = new File(Environment.getExternalStorageDirectory() + File.separator + "temporary_file.jpg");
-            try {
-                f.createNewFile();
-                FileOutputStream fo = new FileOutputStream(f);
-                fo.write(bytes.toByteArray());
-            } catch (IOException e) {
-                e.printStackTrace();
+        if (icon != null) {
+            if (id == R.id.share) {
+                Intent share = new Intent(Intent.ACTION_SEND);
+                share.setType("image/jpeg");
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                icon.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+                File f = new File(Environment.getExternalStorageDirectory() + File.separator + "temporary_file.jpg");
+                try {
+                    f.createNewFile();
+                    FileOutputStream fo = new FileOutputStream(f);
+                    fo.write(bytes.toByteArray());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                share.putExtra(Intent.EXTRA_STREAM, Uri.parse("file:///sdcard/temporary_file.jpg"));
+                startActivity(Intent.createChooser(share, "Share Image"));
             }
-            share.putExtra(Intent.EXTRA_STREAM, Uri.parse("file:///sdcard/temporary_file.jpg"));
-            startActivity(Intent.createChooser(share, "Share Image"));
+        } else {
+            Toast.makeText(getApplicationContext(), "No Qrcode to share",
+                    Toast.LENGTH_SHORT).show();
         }
         //return super.onOptionsItemSelected(item);
         return true;
